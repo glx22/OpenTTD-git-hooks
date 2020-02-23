@@ -1,8 +1,9 @@
 #!/bin/sh
+set -x
 
 git_good()
 {
-git "$@" >/dev/null 2>&1
+git "$@" #>/dev/null 2>&1
 if [ $? -ne 0 ]
 then
 echo "Command '$@' failed"
@@ -12,7 +13,7 @@ fi
 
 git_bad()
 {
-git "$@" >/dev/null 2>&1
+git "$@" #>/dev/null 2>&1
 if [ $? -eq 0 ]
 then
 echo "Command '$@' should have failed"
