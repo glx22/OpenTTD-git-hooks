@@ -21,6 +21,9 @@ jobs:
         git config --global user.name 'OpenTTD CI'
         git rebase origin/$GITHUB_BASE_REF
     - name: Enable hooks
-      run: git config --global core.hooksPath `pwd`/hooks
+      run: |
+        HOOKS_DIR="$(pwd)/hooks"
+        git config --global core.hooksPath ${HOOKS_DIR}
+        echo "::set-env name=HOOKS_DIR::${HOOKS_DIR}"
     - name: Run tests
       run: make
