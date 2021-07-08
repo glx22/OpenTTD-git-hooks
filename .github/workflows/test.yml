@@ -1,0 +1,29 @@
+name: Test
+
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+
+jobs:
+  test:
+    name: Test
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v1
+    - name: Rebase to ${{ github.base_ref }} branch
+      run: |
+        git config --global user.email 'info@openttd.org'
+        git config --global user.name 'OpenTTD CI'
+        git rebase origin/$GITHUB_BASE_REF
+    - name: Enable hooks
+      run: |
+        HOOKS_DIR="$(pwd)/hooks"
+        git config --global core.hooksPath ${HOOKS_DIR}
+        echo "::set-env name=HOOKS_DIR::${HOOKS_DIR}"
+    - name: Run tests
+      run: make
